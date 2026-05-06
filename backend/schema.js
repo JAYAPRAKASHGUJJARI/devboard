@@ -10,7 +10,32 @@ const createTables = async () => {
       created_at TIMESTAMP DEFAULT NOW()
     )
   `);
-  console.log("Users table created successfully");
+ await pool.query(
+  `
+  CREATE TABLE IF NOT EXISTS projects (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(100) NOT NULL,
+  description TEXT,
+      user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+      created_at TIMESTAMP DEFAULT NOW()
+  )
+  `
+ );
+ await pool.query(
+  `
+  CREATE TABLE IF NOT EXISTS tasks (
+
+      id SERIAL PRIMARY KEY,
+      title VARCHAR(100) NOT NULL,
+      description TEXT,
+      status VARCHAR(20) DEFAULT 'todo',
+      project_id INTEGER REFERENCES projects(id) ON DELETE CASCADE,
+      created_at TIMESTAMP DEFAULT NOW()
+  
+  )
+  `
+ );
+ console.log("All tables created successfully");
   pool.end();
 };
 
