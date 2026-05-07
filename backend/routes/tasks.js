@@ -31,5 +31,19 @@ router.get("/:projectId", authenticateToken, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+// Update task status
+router.patch("/:id/status", authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const result = await pool.query(
+      "UPDATE tasks SET status = $1 WHERE id = $2 RETURNING *",
+      [status, id]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 export default router;

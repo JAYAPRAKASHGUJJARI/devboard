@@ -35,6 +35,18 @@ const createTables = async () => {
   )
   `
  );
+await pool.query(
+  `
+  CREATE TABLE IF NOT EXISTS time_logs (
+  id SERIAL PRIMARY KEY,
+  task_id INTEGER REFERENCES tasks(id) ON DELETE CASCADE,
+  start_time TIMESTAMP,
+  end_time TIMESTAMP,
+  duration INTEGER
+)
+  `
+);
+
  console.log("All tables created successfully");
   pool.end();
 };
