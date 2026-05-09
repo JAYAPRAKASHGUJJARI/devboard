@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import ProjectPage from "./pages/ProjectPage";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -15,6 +16,10 @@ function App() {
         <Route
           path="/dashboard"
           element={token ? <Dashboard /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/projects/:id"
+          element={token ? <ProjectPage /> : <Navigate to="/login" />}
         />
       </Routes>
     </BrowserRouter>
