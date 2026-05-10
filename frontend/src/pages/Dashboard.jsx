@@ -44,7 +44,10 @@ export default function Dashboard() {
     <div style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "2rem" }}>
         <h2>Welcome, {user?.name}! 👋</h2>
-        <button onClick={handleLogout}>Logout</button>
+        <div>
+          <button onClick={() => navigate("/analytics")} style={{ marginRight: "1rem" }}>Analytics</button>
+          <button onClick={handleLogout}>Logout</button>
+        </div>
       </div>
 
       <h3>Create New Project</h3>

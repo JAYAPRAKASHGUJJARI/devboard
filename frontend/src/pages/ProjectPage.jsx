@@ -8,6 +8,7 @@ export default function ProjectPage() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [activeTimers, setActiveTimers] = useState({});
 
   useEffect(() => {
     fetchTasks();
@@ -43,8 +44,27 @@ export default function ProjectPage() {
     }
   };
 
+  const handleStartTimer = async (taskId) => {
+    try {
+      await API.post(`/timer/${taskId}/start`);
+      setActiveTimers((prev) => ({ ...prev, [taskId]: true }));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleStopTimer = async (taskId) => {
+    try {
+      await API.post(`/timer/${taskId}/stop`);
+      setActiveTimers((prev) => ({ ...prev, [taskId]: false }));
+      fetchTasks();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
-    <div style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
+    <div style={{ padding: "2rem", maxWidth: "900px", margin: "0 auto" }}>
       <button onClick={() => navigate("/dashboard")}>← Back to Dashboard</button>
       <h2 style={{ marginTop: "1rem" }}>Project Tasks</h2>
 
@@ -85,6 +105,23 @@ export default function ProjectPage() {
                     <option value="in_progress">In Progress</option>
                     <option value="done">Done</option>
                   </select>
+                  <div style={{ marginTop: "0.5rem" }}>
+                    {activeTimers[task.id] ? (
+                      <button
+                        onClick={() => handleStopTimer(task.id)}
+                        style={{ background: "red", color: "white", border: "none", padding: "4px 8px", borderRadius: "4px", cursor: "pointer" }}
+                      >
+                        ⏹ Stop Timer
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleStartTimer(task.id)}
+                        style={{ background: "green", color: "white", border: "none", padding: "4px 8px", borderRadius: "4px", cursor: "pointer" }}
+                      >
+                        ▶ Start Timer
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))}
           </div>
