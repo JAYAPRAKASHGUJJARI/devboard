@@ -33,4 +33,24 @@ router.get("/", authenticateToken, async (req, res) => {
   }
 });
 
+// Delete a project
+router.delete("/:id", authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.userId;
+    // Make sure the project belongs to the logged in user
+    const check = await pool.query(
+      "SELECT * FROM projects WHERE id = $1 AND user_id = $2",
+      [id, userId]
+    );
+    if (!check.rows.length) {
+      return res.status(403).json({ error: "Not authorized to delete this project" });
+    }
+    await pool.query("DELETE FROM projects WHERE id = $1", [id]);
+    res.json({ message: "Project deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 export default router;

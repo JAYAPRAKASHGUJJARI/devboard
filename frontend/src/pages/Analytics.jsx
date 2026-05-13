@@ -30,41 +30,127 @@ export default function Analytics() {
   const inProgressCount = tasks.filter((t) => t.status === "in_progress").length;
   const doneCount = tasks.filter((t) => t.status === "done").length;
 
-  return (
-    <div style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
-      <button onClick={() => navigate("/dashboard")}>← Back to Dashboard</button>
-      <h2 style={{ marginTop: "1rem" }}>Analytics</h2>
+  const StatCard = ({ value, label, color, emoji }) => (
+    <div className="card" style={{ textAlign: "center", borderTop: `3px solid ${color}` }}>
+      <div style={{ fontSize: "2.5rem", fontWeight: "700", color: color, marginBottom: "4px" }}>
+        {value}
+      </div>
+      <div style={{ fontSize: "13px", color: "var(--text2)", fontWeight: "500" }}>
+        {emoji} {label}
+      </div>
+    </div>
+  );
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem", marginTop: "2rem" }}>
-        <div style={{ background: "#f0f0f0", borderRadius: "8px", padding: "1.5rem", textAlign: "center" }}>
-          <h3 style={{ fontSize: "2rem" }}>{projects.length}</h3>
-          <p>Total Projects</p>
-        </div>
-        <div style={{ background: "#fff3cd", borderRadius: "8px", padding: "1.5rem", textAlign: "center" }}>
-          <h3 style={{ fontSize: "2rem" }}>{todoCount}</h3>
-          <p>Tasks To Do</p>
-        </div>
-        <div style={{ background: "#d4edda", borderRadius: "8px", padding: "1.5rem", textAlign: "center" }}>
-          <h3 style={{ fontSize: "2rem" }}>{doneCount}</h3>
-          <p>Tasks Done</p>
-        </div>
+  const ProgressBar = ({ label, count, total, color }) => (
+    <div style={{ marginBottom: "1.25rem" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+        <span style={{ fontSize: "13px", fontWeight: "500", color: "var(--text2)" }}>{label}</span>
+        <span style={{ fontSize: "13px", fontWeight: "600", color: "var(--text)" }}>
+          {count} <span style={{ color: "var(--text3)" }}>/ {total}</span>
+        </span>
+      </div>
+      <div style={{ background: "var(--bg4)", borderRadius: "8px", height: "10px", overflow: "hidden" }}>
+        <div style={{
+          background: color,
+          width: `${total ? (count / total) * 100 : 0}%`,
+          height: "100%",
+          borderRadius: "8px",
+          transition: "width 0.6s ease"
+        }}></div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{ minHeight: "100vh", background: "var(--bg)" }}>
+      {/* Navbar */}
+      <div style={{
+        background: "rgba(255,255,255,0.8)",
+        backdropFilter: "blur(20px)",
+        borderBottom: "1px solid var(--border)",
+        padding: "1rem 2rem",
+        display: "flex",
+        alignItems: "center",
+        gap: "1rem",
+        position: "sticky",
+        top: 0,
+        zIndex: 100
+      }}>
+        <button className="btn-secondary" onClick={() => navigate("/dashboard")}>← Back</button>
+        <h3 style={{ margin: 0, color: "var(--accent)", fontSize: "20px" }}>DevBoard</h3>
       </div>
 
-      <div style={{ marginTop: "2rem" }}>
-        <h3>Task Status Breakdown</h3>
-        <div style={{ marginTop: "1rem" }}>
-          <p>To Do</p>
-          <div style={{ background: "#e0e0e0", borderRadius: "4px", height: "20px" }}>
-            <div style={{ background: "#ffc107", width: `${tasks.length ? (todoCount / tasks.length) * 100 : 0}%`, height: "100%", borderRadius: "4px" }}></div>
-          </div>
-          <p>In Progress</p>
-          <div style={{ background: "#e0e0e0", borderRadius: "4px", height: "20px" }}>
-            <div style={{ background: "#17a2b8", width: `${tasks.length ? (inProgressCount / tasks.length) * 100 : 0}%`, height: "100%", borderRadius: "4px" }}></div>
-          </div>
-          <p>Done</p>
-          <div style={{ background: "#e0e0e0", borderRadius: "4px", height: "20px" }}>
-            <div style={{ background: "#28a745", width: `${tasks.length ? (doneCount / tasks.length) * 100 : 0}%`, height: "100%", borderRadius: "4px" }}></div>
-          </div>
+      <div style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
+        <h2 style={{ marginBottom: "0.5rem" }}>Analytics</h2>
+        <p style={{ color: "var(--text2)", fontSize: "14px", marginBottom: "2rem" }}>
+          Overview of your projects and tasks
+        </p>
+
+        {/* Stat cards */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "1rem", marginBottom: "2rem" }}>
+          <StatCard value={projects.length} label="Projects" color="#0071e3" emoji="📁" />
+          <StatCard value={tasks.length} label="Total Tasks" color="#8e44ad" emoji="📋" />
+          <StatCard value={inProgressCount} label="In Progress" color="#ff9f0a" emoji="⚡" />
+          <StatCard value={doneCount} label="Completed" color="#34c759" emoji="✅" />
+        </div>
+
+        {/* Progress bars */}
+        <div className="card">
+          <h3>Task Status Breakdown</h3>
+          {tasks.length === 0 ? (
+            <p style={{ color: "var(--text2)", fontSize: "14px" }}>No tasks yet.</p>
+          ) : (
+            <>
+              <ProgressBar
+                label="To Do"
+                count={todoCount}
+                total={tasks.length}
+                color="#ff9f0a"
+              />
+              <ProgressBar
+                label="In Progress"
+                count={inProgressCount}
+                total={tasks.length}
+                color="#0071e3"
+              />
+              <ProgressBar
+                label="Done"
+                count={doneCount}
+                total={tasks.length}
+                color="#34c759"
+              />
+            </>
+          )}
+        </div>
+
+        {/* Projects breakdown */}
+        <div className="card" style={{ marginTop: "1.5rem" }}>
+          <h3>Projects Overview</h3>
+          {projects.length === 0 ? (
+            <p style={{ color: "var(--text2)", fontSize: "14px" }}>No projects yet.</p>
+          ) : (
+            projects.map((project) => (
+              <div key={project.id} style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "0.75rem 0",
+                borderBottom: "1px solid var(--border)",
+              }}>
+                <div>
+                  <p style={{ fontWeight: "600", fontSize: "14px" }}>{project.title}</p>
+                  <p style={{ fontSize: "12px", color: "var(--text2)" }}>{project.description || "No description"}</p>
+                </div>
+                <button
+                  className="btn-secondary"
+                  onClick={() => navigate(`/projects/${project.id}`)}
+                  style={{ fontSize: "13px" }}
+                >
+                  View →
+                </button>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>

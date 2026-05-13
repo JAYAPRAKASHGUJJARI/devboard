@@ -31,6 +31,7 @@ router.get("/:projectId", authenticateToken, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 // Update task status
 router.patch("/:id/status", authenticateToken, async (req, res) => {
   try {
@@ -41,6 +42,17 @@ router.patch("/:id/status", authenticateToken, async (req, res) => {
       [status, id]
     );
     res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Delete a task
+router.delete("/:id", authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query("DELETE FROM tasks WHERE id = $1", [id]);
+    res.json({ message: "Task deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

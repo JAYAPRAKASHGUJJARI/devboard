@@ -22,36 +22,95 @@ export default function Register() {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "100px auto", padding: "2rem" }}>
-      <h2>Create your DevBoard account</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleRegister}>
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          style={{ display: "block", width: "100%", marginBottom: "1rem", padding: "0.5rem" }}
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ display: "block", width: "100%", marginBottom: "1rem", padding: "0.5rem" }}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ display: "block", width: "100%", marginBottom: "1rem", padding: "0.5rem" }}
-        />
-        <button type="submit" style={{ width: "100%", padding: "0.5rem" }}>
-          Register
-        </button>
-      </form>
-      <p>Already have an account? <a href="/login">Login</a></p>
+    <div style={{
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: "var(--bg)",
+    }}>
+      <div style={{
+        width: "100%",
+        maxWidth: "400px",
+        padding: "2rem",
+      }}>
+        {/* Logo */}
+        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+          <div style={{
+            width: "56px",
+            height: "56px",
+            background: "var(--accent)",
+            borderRadius: "16px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "0 auto 1rem",
+            fontSize: "24px",
+          }}>
+            📋
+          </div>
+          <h2 style={{ marginBottom: "4px" }}>Create account</h2>
+          <p style={{ color: "var(--text2)", fontSize: "14px" }}>
+            Start tracking your projects today
+          </p>
+        </div>
+
+        {/* Card */}
+        <div className="card">
+          {error && (
+            <div style={{
+              background: "#ff3b3015",
+              border: "1px solid #ff3b3040",
+              borderRadius: "8px",
+              padding: "10px 14px",
+              marginBottom: "1rem",
+              fontSize: "13px",
+              color: "var(--accent3)",
+            }}>
+              {error}
+            </div>
+          )}
+          <form onSubmit={handleRegister}>
+            <label style={{ fontSize: "13px", fontWeight: "500", color: "var(--text2)", display: "block", marginBottom: "4px" }}>
+              Full Name
+            </label>
+            <input
+              type="text"
+              placeholder="Jayaprakash"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <label style={{ fontSize: "13px", fontWeight: "500", color: "var(--text2)", display: "block", marginBottom: "4px" }}>
+              Email
+            </label>
+            <input
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <label style={{ fontSize: "13px", fontWeight: "500", color: "var(--text2)", display: "block", marginBottom: "4px" }}>
+              Password
+            </label>
+            <input
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button type="submit" style={{ width: "100%", marginTop: "0.5rem" }}>
+              Create Account
+            </button>
+          </form>
+        </div>
+
+        <p style={{ textAlign: "center", marginTop: "1.5rem", fontSize: "14px", color: "var(--text2)" }}>
+          Already have an account?{" "}
+          <a href="/login" style={{ color: "var(--accent)", textDecoration: "none", fontWeight: "500" }}>
+            Sign in
+          </a>
+        </p>
+      </div>
     </div>
   );
 }

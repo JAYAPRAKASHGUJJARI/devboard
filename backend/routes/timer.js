@@ -48,5 +48,23 @@ router.post("/:taskId/stop", authenticateToken, async (req, res) => {
     res.status(500).json({ error: "Stop timer failed" });
   }
 });
+// Get total time spent on a task
+router.get("/:taskId", authenticateToken, async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    const result = await pool.query(
+      `SELECT COALESCE(SUM(duration), 0) as total_seconds
+       FROM time_logs
+       WHERE task_id = $1 AND duration IS NOT NULL`,
+      [taskId]
+    );
+    const totalSeconds = result.rows[0].total_seconds;
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    res.json({ totalSeconds, minutes, seconds });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 export default router;
