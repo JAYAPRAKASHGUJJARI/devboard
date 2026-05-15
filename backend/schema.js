@@ -46,6 +46,10 @@ await pool.query(
 )
   `
 );
+await pool.query(`
+  ALTER TABLE tasks 
+  ADD COLUMN IF NOT EXISTS timer_started_at TIMESTAMP
+`);
 
  console.log("All tables created successfully");
   pool.end();

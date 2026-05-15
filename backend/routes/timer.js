@@ -12,6 +12,11 @@ router.post("/:taskId/start", authenticateToken, async (req, res) => {
       "INSERT INTO time_logs (task_id, start_time) VALUES ($1, NOW()) RETURNING *",
       [taskId]
     );
+    // Save timer_started_at to task
+    await pool.query(
+      "UPDATE tasks SET timer_started_at = NOW() WHERE id = $1",
+      [taskId]
+    );
     res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error(err);
@@ -42,12 +47,18 @@ router.post("/:taskId/stop", authenticateToken, async (req, res) => {
        RETURNING *`,
       [log.id]
     );
+    // Clear timer_started_at from task
+    await pool.query(
+      "UPDATE tasks SET timer_started_at = NULL WHERE id = $1",
+      [taskId]
+    );
     res.json(updated.rows[0]);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Stop timer failed" });
   }
 });
+
 // Get total time spent on a task
 router.get("/:taskId", authenticateToken, async (req, res) => {
   try {

@@ -9,10 +9,7 @@ export default function ProjectPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [taskError, setTaskError] = useState("");
-  const [activeTimers, setActiveTimers] = useState(() => {
-    const saved = localStorage.getItem("activeTimers");
-    return saved ? JSON.parse(saved) : {};
-  });
+  const [activeTimers, setActiveTimers] = useState({});
   const [taskTimes, setTaskTimes] = useState({});
   const [liveSeconds, setLiveSeconds] = useState({});
   const intervalRefs = useRef({});
@@ -29,25 +26,24 @@ export default function ProjectPage() {
 
   useEffect(() => {
     fetchTasks();
-    const saved = localStorage.getItem("activeTimers");
-    if (saved) {
-      const timers = JSON.parse(saved);
-      Object.entries(timers).forEach(([taskId, startTime]) => {
-        if (startTime) startLiveTick(taskId, startTime);
-      });
-    }
     return () => Object.values(intervalRefs.current).forEach(clearInterval);
-  }, [startLiveTick]);
-
-  useEffect(() => {
-    localStorage.setItem("activeTimers", JSON.stringify(activeTimers));
-  }, [activeTimers]);
+  }, []);
 
   const fetchTasks = async () => {
     try {
       const res = await API.get(`/tasks/${id}`);
       setTasks(res.data);
       fetchAllTaskTimes(res.data);
+
+      // Check for active timers from database
+      const newActiveTimers = {};
+      res.data.forEach((task) => {
+        if (task.timer_started_at) {
+          newActiveTimers[task.id] = task.timer_started_at;
+          startLiveTick(task.id, task.timer_started_at);
+        }
+      });
+      setActiveTimers(newActiveTimers);
     } catch (err) {
       console.error(err);
     }
