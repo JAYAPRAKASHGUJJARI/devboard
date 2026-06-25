@@ -164,8 +164,8 @@ The app will be running at `http://localhost:5173`
 ## 🌐 Deployment
 
 - **Frontend** — Deployed on [Vercel](https://vercel.com) with SPA routing via `vercel.json`
-- **Backend** — Can be deployed on Railway, Render, or any Node.js host
-- **Database** — PostgreSQL hosted on Neon / Supabase / Railway
+- **Backend** — Can be deployed on  Render
+- **Database** — PostgreSQL hosted on Neon 
 
 ---
 
