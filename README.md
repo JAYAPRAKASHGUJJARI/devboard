@@ -1,7 +1,9 @@
-<img width="597" height="547" alt="image" src="https://github.com/user-attachments/assets/9b916478-f1fd-40a9-ba84-99e860c62297" /># 🚀 DevBoard — Developer Project & Task Management Dashboard
+# 🚀 DevBoard — Developer Project & Task Management Dashboard
 
 > A full-stack productivity app for developers to manage projects, track tasks, and monitor time — built with React and Node.js.
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-DevBoard-blue?style=for-the-badge)](https://devboard-azure.vercel.app)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/JAYAPRAKASHGUJJARI/devboard)
 
 ---
 
@@ -17,15 +19,11 @@ Built as a personal productivity tool to demonstrate end-to-end full-stack devel
 
 | Login | Dashboard |
 |---|---|
-<img width="597" height="547" alt="image" src="https://github.com/user-attachments/assets/66cbf598-4e42-45fb-84e4-030df26ae20d" />
-<img width="1452" height="597" alt="image" src="https://github.com/user-attachments/assets/f95f0bbb-35cf-493a-8840-65ce93bc1126" />
-
+| ![Login Page](./screenshots/login.png) | ![Dashboard](./screenshots/dashboard.png) |
 
 | Task Tracker | Analytics |
 |---|---|
-| <img width="884" height="599" alt="image" src="https://github.com/user-attachments/assets/7eb2415b-517f-4af7-bf86-561645ec4fa8" />
- | <img width="1215" height="764" alt="image" src="https://github.com/user-attachments/assets/16fd6b4d-226b-4ab5-80bc-419a66815261" />
- |
+| ![Tasks](./screenshots/tasks.png) | ![Analytics](./screenshots/analytics.png) |
 
 ---
 
