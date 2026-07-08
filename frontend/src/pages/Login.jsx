@@ -52,13 +52,14 @@ export default function Login() {
               {error}
             </div>
           )}
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={() => setError("Google sign-in failed. Please try again.")}
-            theme="outline"
-            size="large"
-            width="320"
-          />
+        <GoogleLogin
+  onSuccess={handleGoogleSuccess}
+  onError={() => setError("Google sign-in failed. Please try again.")}
+  theme="outline"
+  size="large"
+  width="320"
+  text="signin_with"
+/>
         </div>
 
         <p style={{ textAlign: "center", marginTop: "1.5rem", fontSize: "13px", color: "var(--text3)" }}>
