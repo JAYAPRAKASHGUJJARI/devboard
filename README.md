@@ -18,7 +18,8 @@ Built as a personal productivity tool to demonstrate full-stack development skil
 
 **Login**
 
-<img width="1463" height="831" alt="Login screen" src="https://github.com/user-attachments/assets/0bff2dd9-57d4-40cd-ace9-161cbae82949" />
+<img width="1463" height="831" alt="Login screen" src="<img width="1463" height="832" alt="image" src="https://github.com/user-attachments/assets/c21de351-1ea1-4463-9c27-c7f5eef6c154" />
+" />
 
 **Dashboard**
 
