@@ -1,22 +1,22 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
 import API from "../api/axios";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      const res = await API.post("/auth/login", { email, password });
+      const res = await API.post("/auth/google", {
+        credential: credentialResponse.credential,
+      });
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       navigate("/dashboard");
     } catch (err) {
-      setError("Invalid email or password");
+      setError("Google sign-in failed. Please try again.");
     }
   };
 
@@ -28,77 +28,41 @@ export default function Login() {
       justifyContent: "center",
       background: "var(--bg)",
     }}>
-      <div style={{
-        width: "100%",
-        maxWidth: "400px",
-        padding: "2rem",
-      }}>
-        {/* Logo */}
+      <div style={{ width: "100%", maxWidth: "400px", padding: "2rem" }}>
         <div style={{ textAlign: "center", marginBottom: "2rem" }}>
           <div style={{
-            width: "56px",
-            height: "56px",
-            background: "var(--accent)",
-            borderRadius: "16px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            margin: "0 auto 1rem",
-            fontSize: "24px",
+            width: "56px", height: "56px", background: "var(--accent)",
+            borderRadius: "16px", display: "flex", alignItems: "center",
+            justifyContent: "center", margin: "0 auto 1rem", fontSize: "24px",
           }}>
             📋
           </div>
-          <h2 style={{ marginBottom: "4px" }}>Welcome back</h2>
+          <h2 style={{ marginBottom: "4px" }}>Welcome to DevBoard</h2>
           <p style={{ color: "var(--text2)", fontSize: "14px" }}>
-            Sign in to your DevBoard account
+            Sign in with Google to continue
           </p>
         </div>
 
-        {/* Card */}
-        <div className="card">
+        <div className="card" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
           {error && (
             <div style={{
-              background: "#ff3b3015",
-              border: "1px solid #ff3b3040",
-              borderRadius: "8px",
-              padding: "10px 14px",
-              marginBottom: "1rem",
-              fontSize: "13px",
-              color: "var(--accent3)",
+              width: "100%", background: "#ff3b3015", border: "1px solid #ff3b3040",
+              borderRadius: "8px", padding: "10px 14px", fontSize: "13px", color: "var(--accent3)",
             }}>
               {error}
             </div>
           )}
-          <form onSubmit={handleLogin}>
-            <label style={{ fontSize: "13px", fontWeight: "500", color: "var(--text2)", display: "block", marginBottom: "4px" }}>
-              Email
-            </label>
-            <input
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <label style={{ fontSize: "13px", fontWeight: "500", color: "var(--text2)", display: "block", marginBottom: "4px" }}>
-              Password
-            </label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button type="submit" style={{ width: "100%", marginTop: "0.5rem" }}>
-              Sign In
-            </button>
-          </form>
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => setError("Google sign-in failed. Please try again.")}
+            theme="outline"
+            size="large"
+            width="320"
+          />
         </div>
 
-        <p style={{ textAlign: "center", marginTop: "1.5rem", fontSize: "14px", color: "var(--text2)" }}>
-          Don't have an account?{" "}
-          <a href="/register" style={{ color: "var(--accent)", textDecoration: "none", fontWeight: "500" }}>
-            Create one
-          </a>
+        <p style={{ textAlign: "center", marginTop: "1.5rem", fontSize: "13px", color: "var(--text3)" }}>
+          By continuing you agree to DevBoard's terms and privacy policy.
         </p>
       </div>
     </div>
